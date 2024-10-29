@@ -1,0 +1,9 @@
+Single Room
+5
+100.00
+Double Room
+3
+150.00
+Suite
+2
+250.00
