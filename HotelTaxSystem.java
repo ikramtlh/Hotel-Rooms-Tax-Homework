@@ -47,7 +47,7 @@ public class HotelTaxSystem {
         }
 
         // Print total income and total tax
-        System.out.printf("Total Income : %s%n", df.format(totalIncome));
+        System.out.printf("\nTotal Income : %s%n", df.format(totalIncome));
         System.out.printf("Total Tax: %s%n", df.format(totalTax));
         
         file.close();
