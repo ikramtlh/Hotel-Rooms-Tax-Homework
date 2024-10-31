@@ -1,73 +1,56 @@
-import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class HotelTaxSystem {
-
     public static void main(String[] args) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
-        Scanner fileScanner = new Scanner(new FileReader("C:\\Users\\HP\\Desktop\\ikram\\tinx\\Hotel-Rooms-Tax-Homework\\rooms.txt"));
+        Scanner file = new Scanner(new FileReader("C:\\Users\\HP\\Desktop\\ikram\\tinx\\Hotel-Rooms-Tax-Homework\\rooms.txt"));
+        
+        System.out.println("-- Room Tax System --");
 
-        System.out.println("-- Hotel Tax System --");
-        System.out.print("Do you want to specify a custom tax rate? (yes/no): ");
-        String response = input.nextLine().trim().toLowerCase();
-
-        double taxRate = 0.10;
-
-        if (response.equals("yes")) {
-            System.out.print("Specify custom tax rate (integer percentage, e.g., 15 for 15%): ");
-            if (input.hasNextInt()) {
-                int taxRateInput = input.nextInt();
-                taxRate = taxRateInput / 100.0;
+        System.out.print("Specify Custom Tax Rate MINJ: Y/N: ");
+        String minj = input.nextLine();
+        double taxRate = 20.0; // Default tax rate
+        
+        if (minj.equalsIgnoreCase("Y")) {
+            System.out.print("Specify Tax Rate (%) : "); // Clearer prompt for the tax input
+            
+            // Clear the buffer before reading the next input
+            if (input.hasNextDouble()) {
+                taxRate = input.nextDouble();
+                input.nextLine();  // Consume the newline left over
             } else {
-                System.out.println("Invalid input. Using default tax rate of 10%.");
-                input.nextLine();
+                System.out.println("Invalid tax rate input. Using default rate.");
+                input.nextLine();  // Clear invalid input from buffer
             }
-        } else {
-            System.out.println("Using default tax rate of 10%.");
         }
 
-        double totalIncomeBeforeTax = 0.0;
-        double totalTax = 0.0;
+        DecimalFormat df = new DecimalFormat("£0.00");
+        double totalIncome = 0;
+        double totalTax = 0;
 
-        while (fileScanner.hasNextLine()) {
-            String roomType = fileScanner.nextLine().trim();
+        while (file.hasNext()) {
+            String roomType = file.next();
+            int bookings = Integer.parseInt(file.next());
+            double roomPrice = Double.parseDouble(file.next());
 
-            if (roomType.isEmpty()) continue;
+            double income = bookings * roomPrice;
+            double tax = income * (taxRate / 100);
 
-            String bookingsLine = "";
-            while (fileScanner.hasNextLine()) {
-                bookingsLine = fileScanner.nextLine().trim();
-                if (!bookingsLine.isEmpty()) break;
-            }
-            if (bookingsLine.isEmpty()) break;
-
-            String roomPriceLine = "";
-            while (fileScanner.hasNextLine()) {
-                roomPriceLine = fileScanner.nextLine().trim();
-                if (!roomPriceLine.isEmpty()) break;
-            }
-            if (roomPriceLine.isEmpty()) break;
-
-            int bookings = Integer.parseInt(bookingsLine);
-            double roomPrice = Double.parseDouble(roomPriceLine);
-
-            double incomeBeforeTax = bookings * roomPrice;
-            double tax = incomeBeforeTax * taxRate;
-
-            System.out.printf("%nRoom: %s%n", roomType);
-            System.out.printf("Bookings: %d, Room Price: £%.2f%n", bookings, roomPrice);
-            System.out.printf("Income Before Tax: £%.2f, Tax: £%.2f%n", incomeBeforeTax, tax);
-
-            totalIncomeBeforeTax += incomeBeforeTax;
+            totalIncome += income;
             totalTax += tax;
+
+            System.out.printf("Room Type: %s, Bookings: %d, Room Price: %s, Income: %s, Tax: %s%n",
+                    roomType, bookings, df.format(roomPrice), df.format(income), df.format(tax));
         }
 
-        System.out.println();
-        System.out.printf("Total Income Before Tax: £%.2f%n", totalIncomeBeforeTax);
-        System.out.printf("Total Tax Collected: £%.2f%n", totalTax);
-
-        fileScanner.close();
+        // Print total income and total tax
+        System.out.printf("Total Income : %s%n", df.format(totalIncome));
+        System.out.printf("Total Tax: %s%n", df.format(totalTax));
+        
+        file.close();
         input.close();
     }
 }
