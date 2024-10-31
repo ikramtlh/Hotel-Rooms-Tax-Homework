@@ -1,6 +1,5 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class HotelTaxSystem {
@@ -15,9 +14,8 @@ public class HotelTaxSystem {
         double taxRate = 20.0; // Default tax rate
         
         if (minj.equalsIgnoreCase("Y")) {
-            System.out.print("Specify Tax Rate (%) : "); // Clearer prompt for the tax input
+            System.out.print("Specify Tax Rate (%) : "); // Prompt for custom tax rate
             
-            // Clear the buffer before reading the next input
             if (input.hasNextDouble()) {
                 taxRate = input.nextDouble();
                 input.nextLine();  // Consume the newline left over
@@ -27,7 +25,6 @@ public class HotelTaxSystem {
             }
         }
 
-        DecimalFormat df = new DecimalFormat("£0.00");
         double totalIncome = 0;
         double totalTax = 0;
 
@@ -42,13 +39,14 @@ public class HotelTaxSystem {
             totalIncome += income;
             totalTax += tax;
 
-            System.out.printf("Room Type: %s, Bookings: %d, Room Price: %s, Income: %s, Tax: %s%n",
-                    roomType, bookings, df.format(roomPrice), df.format(income), df.format(tax));
+            
+            System.out.printf("Room Type: %s, Bookings: %d, Room Price: £%.2f, Income: £%.2f, Tax: £%.2f%n",
+                    roomType, bookings, roomPrice, income, tax);
         }
 
         // Print total income and total tax
-        System.out.printf("\nTotal Income : %s%n", df.format(totalIncome));
-        System.out.printf("Total Tax: %s%n", df.format(totalTax));
+        System.out.printf("\nTotal Income : £%.2f%n", totalIncome);
+        System.out.printf("Total Tax: £%.2f%n", totalTax);
         
         file.close();
         input.close();
