@@ -5,13 +5,10 @@ import java.util.Scanner;
 public class HotelTaxSystem {
 
     private static final double DEFAULT_TAX_RATE = 0.10;
+    private static final String FILE_PATH = "C:\\Users\\HP\\Desktop\\ikram\\tinx\\Hotel-Rooms-Tax-Homework\\rooms.txt"; // Define the path to the rooms file
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Please enter the file path containing the room data (e.g., rooms.txt):");
-        String filePath = scanner.nextLine();
-        System.out.println("File path: " + filePath);
 
         System.out.println("Do you want to specify a custom tax rate? (yes/no)");
         String response = scanner.nextLine();
@@ -27,7 +24,7 @@ public class HotelTaxSystem {
             System.out.println("The default tax rate is " + (taxRate * 100) + "%");
         }
 
-        File file = new File(filePath);
+        File file = new File(FILE_PATH); // Use the predefined file path
 
         try {
             Scanner fileScanner = new Scanner(file);
